@@ -93,6 +93,7 @@ class MakeICS(object):
                 event_str += '\nEND:VEVENT\n'
         # for the tail
         self.__ics_info += event_str + '\nEND:VCALENDAR'
+        print 'Make ics str done!'
 
     def createTime(self):
         return datetime.now().strftime('%Y%m%dT%H%M%SZ')
@@ -101,12 +102,14 @@ class MakeICS(object):
         return ''.join(sample(ascii_letters, 20)) + '@kwongtai'
 
     def saveICS(self):
-        with open('calender.ics', 'w') as f:
+        with open('calendar.ics', 'w') as f:
             f.write(self.__ics_info.encode('utf-8'))
+        print 'Save the ics file done!'
 
 
 def debug():
     m = MakeICS()
+
 
 if __name__ == '__main__':
     debug()
