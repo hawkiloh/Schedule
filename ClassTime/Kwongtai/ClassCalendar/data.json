@@ -1,0 +1,24 @@
+{
+	"email": "511533061@qq.com",
+	"date": "2018-03-05",
+	"subjects":[
+		{
+			"course": "高数",
+			"teacher": "刘老师",
+            "week": 1,
+			"time": 0,
+			"address": "教3-201",
+			"startWeek": 1,
+			"endWeek": 12
+		},
+		{
+			"course": "大英",
+			"teacher": "霍老师",
+            "week": 2,
+			"time": 3,
+			"address": "教4-201",
+			"startWeek": 1,
+			"endWeek": 22
+		}
+	]
+}
