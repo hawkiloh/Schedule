@@ -348,7 +348,8 @@
 				function _del(row){
 					var index = dg.datagrid('getRowIndex', row);
 					if (index == -1){return}
-					if (row.isNewRecord){
+					// if (row.isNewRecord){
+					if (false){
 						dg.datagrid('cancelEdit', index);
 					} else {
 						if (opts.destroyUrl){

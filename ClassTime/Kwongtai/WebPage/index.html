@@ -2,7 +2,7 @@
 <html lang="zh-cmn-Hans">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>广工课程表日程生成系统</title>
     <link rel="stylesheet" type="text/css" href="css/easyui.css">
     <link rel="stylesheet" type="text/css" href="css/icon.css">
     <script src="js/jquery-3.3.1.js"></script>
@@ -17,7 +17,8 @@
         .datagrid {
             display: inline-block;
         }
-        #div1{
+
+        #div1 {
             width: 600px;
             display: inline-block;
         }
@@ -32,7 +33,7 @@
             <span>请选择第一周的星期一</span>
             <input id="date" name="date" type="date">
             <span style="margin-left: 20px">接收邮箱</span>
-            <input id="email" type="email">
+            <input id="email" type="email" placeholder="123@123.com">
         </p>
         <div id="div1">
             <div id="tb" style="margin-bottom:10px">
@@ -44,8 +45,7 @@
                    data-options="iconCls:'icon-remove',plain:true">移除课程</a>
             </div>
             <table id="tt" style="width:600px;height:200px"
-                   singleSelect="true" data-options="url:'data.json',
-                   fitColumns:true,autoRowHeight:false,toolbar: '#tb'" >
+                   singleSelect="true" data-options="fitColumns:true,autoRowHeight:false,toolbar: '#tb'">
                 <thead>
                 <tr>
                     <th field="course" align="center" width="70" editor="{type:'text'}">课程名称</th>
@@ -68,15 +68,31 @@
                             options:{
                                 valueField:'id',
 								    textField:'name',
-								    data:[{id:1,name:'1 2节'},{id:2,name:'3 4节'},{id:3,name:'6 7节'},
-								    {id:4,name:'8 9节'},{id:5,name:'10 11节'}]
+								    data:[{id:1,name:'1 2节'},{id:2,name:'3 4节'},{id:3,name:'5 6 7节'},
+								    {id:4,name:'6 7节'},{id:5,name:'8 9节'},{id:6,name:'10 11 12节'}]
                             }
                         }"
                     >上课时间
                     </th>
                     <th field="address" align="center" width="70" editor="text">上课地点</th>
-                    <th field="startWeek" align="center" width="70" editor="numberbox">起始周</th>
-                    <th field="endWeek" align="center" width="70" editor="numberbox">结束周</th>
+                    <th field="startWeek" align="center" width="70" data-options="
+                        editor:{
+                            type:'numberbox',
+                            options:{
+                                min:1,max:22
+                            }
+                        }
+
+                    ">起始周
+                    </th>
+                    <th field="endWeek" align="center" width="70" data-options="editor:{
+                            type:'numberbox',
+                            options:{
+                                min:1,max:22
+                            }
+                        }
+                    ">结束周
+                    </th>
                 </tr>
                 </thead>
             </table>
@@ -85,32 +101,49 @@
 
         <script type="text/javascript">
             $(function () {
-                $('#tt').edatagrid({
-                    autoSave:true
+                var $tt = $('#tt');
+                $tt.edatagrid({
+                    autoSave: true,
+                    url:null//'data.json'
                 });
+                var $cols = $tt.datagrid('options').columns[0];
+                var len = $cols.length;
+                for (var i = 0; i < len; i++) {
+                    if ($cols[i].field === 'week' || $cols[i].field === 'time') {
+                        $cols[i].formatter = function (value, row, index) {
+                            // console.log(this.editor.options);
+                            var data = this.editor.options.data;
+                            if(value) return data[value - 1].name;
+                        }
+                    }
+
+                }
             });
         </script>
         <div style="margin-top: 20px">
-            <input type="button"  value="提交" onclick="mysubmit()">
+            <input type="button" value="提交" onclick="mysubmit()">
         </div>
 
     </div>
 </div>
 </body>
 <script>
-    $(
-        function () {
-            $('#email').val('123@123.com');
-            $('#date').val('2018-05-10');
-        }
-    )
+    // $(
+    //     function () {
+    //         // $('#email').val('123@123.com');
+    //         // $('#date').val('2018-05-10');
+    //
+    //     }
+    // )
 
 
     function getData() {
         var subjects = [];
         var rows = $('#tt').datagrid('getRows');
-        var subnum=rows.length;
-        for(var i=0;i<subnum;i++){delete rows[i].isNewRecord}
+        var subnum = rows.length;
+        for (var i = 0; i < subnum; i++) {
+            delete rows[i].isNewRecord
+        }
         var data = {
             "email": $('#email').val(),
             "date": $('#date').val(),
@@ -121,13 +154,13 @@
     }
 
     function mysubmit() {
-        $.ajax({
-            url: '/json',
-            contentType: "application/json; charset=utf-8",
-            type: 'post',
-            dataType: 'json',
-            data: JSON.stringify(getData())
-        })
+        // $.ajax({
+        //     url: '/json',
+        //     contentType: "application/json; charset=utf-8",
+        //     type: 'post',
+        //     dataType: 'json',
+        //     data: JSON.stringify(getData())
+        // })
     }
 </script>
 </html>
