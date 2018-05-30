@@ -4,7 +4,8 @@
       "course": "大物",
       "teacher": "老王",
       "week": 1,
-      "time": 2,
+      "startTime": "08:30",
+      "endTime": "10:00",
       "address": "教一221",
       "startWeek": 2,
       "endWeek": 20
@@ -13,7 +14,8 @@
       "course": "高数",
       "teacher": "刘",
       "week": 3,
-      "time": 3,
+      "startTime": "08:30",
+      "endTime": "10:00",
       "address": "教三205",
       "startWeek": 1,
       "endWeek": 10
