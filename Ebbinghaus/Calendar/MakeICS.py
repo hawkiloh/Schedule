@@ -16,23 +16,23 @@ class MakeICS(object):
         self.__daily_dict = None
         self.__daily_ebb_dict = {}
 
-        self.readExcel()
-        self.makeEbbTime()
-        self.createTime()
-        self.makeICS()
-        self.saveICS()
+        self.__readExcel()
+        self.__makeEbbTime()
+        self.__createTime()
+        self.__makeICS()
 
-    def readExcel(self):
+
+    def __readExcel(self):
         self.__daily_dict = Reader('TimeTable.xlsx').getAllDailyList()
 
-    def makeEbbTime(self):
+    def __makeEbbTime(self):
         for key, val in self.__daily_dict.items():
             temp_ebb_list = Ebbinghaus(val[0], val[1]).getAllList()
             self.__daily_ebb_dict[key] = (temp_ebb_list, val[2], val[3])
             del temp_ebb_list
         print self.__daily_ebb_dict
 
-    def makeICS(self):
+    def __makeICS(self):
         '''
         example:
             BEGIN:VCALENDAR
@@ -72,20 +72,20 @@ class MakeICS(object):
         event_str = ''
         for key, val in self.__daily_ebb_dict.items():
             for _time in val[0]:
-                event_str += '\nBEGIN:VEVENT\nDTSTART:' + _time[0].strftime('%Y%m%dT%H%M%SZ')
-                event_str += '\nDTEND:' + _time[1].strftime('%Y%m%dT%H%M%SZ')
-                event_str += '\nDTSTAMP:' + self.createTime()
-                event_str += '\nUID:' + self.createUID()
-                event_str += '\nCREATED:' + self.createTime()
+                event_str += '\nBEGIN:VEVENT\nDTSTART:' + _time[0].strftime('%Y%m%dT%H%M%S')
+                event_str += '\nDTEND:' + _time[1].strftime('%Y%m%dT%H%M%S')
+                event_str += '\nDTSTAMP:' + self.__createTime()
+                event_str += '\nUID:' + self.__createUID()
+                event_str += '\nCREATED:' + self.__createTime()
                 event_str += '\nDESCRIPTION:' + val[1]
-                event_str += '\nLAST-MODIFIED:' + self.createTime()
+                event_str += '\nLAST-MODIFIED:' + self.__createTime()
                 event_str += '\nLOCATION:'
                 event_str += '\nSEQUENCE:0'
                 event_str += '\nSUMMARY:' + key
                 # for trigger
                 event_str += '\nBEGIN:VALARM'
-                event_str += '\nX-WR-ALARMUID:' + self.createUID()
-                event_str += '\nUID:' + self.createUID()
+                event_str += '\nX-WR-ALARMUID:' + self.__createUID()
+                event_str += '\nUID:' + self.__createUID()
                 event_str += '\nTRIGGER:' + '-PT' + val[2]
                 event_str += '\nACTION:DISPLAY'
                 event_str += '\nEND:VALARM'
@@ -95,21 +95,20 @@ class MakeICS(object):
         self.__ics_info += event_str + '\nEND:VCALENDAR'
         print 'Make ics str done!'
 
-    def createTime(self):
+    def __createTime(self):
         return datetime.now().strftime('%Y%m%dT%H%M%SZ')
 
-    def createUID(self):
+    def __createUID(self):
         return ''.join(sample(ascii_letters, 20)) + '@kwongtai'
 
     def saveICS(self):
         with open('calendar.ics', 'w') as f:
             f.write(self.__ics_info.encode('utf-8'))
-        print 'Save the ics file done!'
+        print 'Save the ics file Done!'
 
 
 def debug():
     m = MakeICS()
-
 
 if __name__ == '__main__':
     debug()
