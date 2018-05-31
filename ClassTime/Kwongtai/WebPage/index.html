@@ -37,7 +37,7 @@
             <input id="email" type="email" placeholder="123@123.com">
         </p>
         <div id="div1">
-            <div id="tb" style="margin-bottom:10px">
+            <div id="tb">
                 <a href="#" onclick="javascript:$('#tt').edatagrid('addRow')" class="easyui-linkbutton"
                    data-options="iconCls:'icon-add',plain:true">增加课程</a>
                 <a href="#" onclick="javascript:$('#tt').edatagrid('saveRow')" class="easyui-linkbutton"
@@ -162,6 +162,10 @@
         var subjects = [];
         var rows = $('#tt').datagrid('getRows');
         var subnum = rows.length;
+        if(subnum<=0){
+            alert('课程表内容为空！');
+            return;
+        }
         for (var i = 0; i < subnum; i++) {
             delete rows[i].isNewRecord
         }
@@ -175,13 +179,37 @@
     }
 
     function mysubmit() {
-        // $.ajax({
-        //     url: '/json',
-        //     contentType: "application/json; charset=utf-8",
-        //     type: 'post',
-        //     dataType: 'json',
-        //     data: JSON.stringify(getData())
-        // })
+        var subjects = [];
+        //课程表保存状态检测
+        var editIndex=$('#tt').edatagrid('options').editIndex;
+        if(editIndex!=-1){
+            alert('课程表尚未保存！请保存后再提交。');
+            return;
+        }
+        //课程表内容为空检测
+        var rows = $('#tt').datagrid('getRows');
+        var subnum = rows.length;
+        if(subnum<=0){
+            alert('课程表内容为空！');
+            return;
+        }
+        for (var i = 0; i < subnum; i++) {
+            delete rows[i].isNewRecord
+        }
+        var data = {
+            "email": $('#email').val(),
+            "date": $('#date').val(),
+            "subNum": subnum,
+            "subjects": JSON.stringify(rows)
+        };
+
+        $.ajax({
+            url: '/json',
+            contentType: "application/json; charset=utf-8",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(data)
+        })
     }
 </script>
 </html>
