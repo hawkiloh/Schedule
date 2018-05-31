@@ -6,19 +6,21 @@
 			"course": "高数",
 			"teacher": "刘老师",
             "week": 1,
-			"time": 0,
+      		"startTime": "08:30",
+			"endTime": "10:00",
 			"address": "教3-201",
 			"startWeek": 1,
-			"endWeek": 12
+			"endWeek": 14
 		},
 		{
 			"course": "大英",
 			"teacher": "霍老师",
             "week": 2,
-			"time": 3,
+			"startTime": "12:30",
+      		"endTime": "14:00",
 			"address": "教4-201",
 			"startWeek": 1,
-			"endWeek": 22
+			"endWeek": 14
 		}
 	]
 }

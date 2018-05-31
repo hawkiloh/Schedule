@@ -5,6 +5,7 @@ __author__ = 'kwongtai'
 __time__ = '2018-5-15'
 
 import pickle
+from os.path import exists
 
 def str2dict():
     apiUser = raw_input("Please input your apiUser:")
@@ -26,10 +27,13 @@ def loadKey(path):
     return ret
 
 def main():
-    dic = str2dict()
-    path = (r'D:\key.pkl')
-    saveKey(dic, path)
-    print loadKey(path)
+    path = r'D:\key.pkl'
+    if exists(path):
+        print loadKey(path)
+    else:
+        dic = str2dict()
+        saveKey(dic, path)
+
 
 if __name__ == '__main__':
     main()
